@@ -1,31 +1,31 @@
-﻿name: DeepComparer CI
+﻿name: .NET Build & Test
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
-  build-test-benchmark:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
-    - name: Setup .NET
-      uses: actions/setup-dotnet@v3
-      with:
-        dotnet-version: '9.0.x'
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
 
-    - name: Restore dependencies
-      run: dotnet restore DeepComparer/DeepComparer.sln
+      - name: Restore Dependencies
+        run: dotnet restore ./DeepComparer/DeepComparer.sln
 
-    - name: Build
-      run: dotnet build DeepComparer/DeepComparer.sln --configuration Release --no-restore
+      - name: Build Solution
+        run: dotnet build ./DeepComparer/DeepComparer.sln --configuration Release --no-restore
 
-    - name: Test
-      run: dotnet test DeepComparer/DeepComparer.sln --no-build --verbosity normal
-
-    - name: Benchmark
-      run: dotnet run -c Release --project DeepComparer/benchmarks/DeepComparer.Benchmarks/DeepComparer.Benchmarks.csproj -- --filter * --job short --warmupCount 1 --iterationCount 1
+      - name: Run Tests
+        run: dotnet test ./DeepComparer/DeepComparer.sln --configuration Release --no-build --verbosity normal
