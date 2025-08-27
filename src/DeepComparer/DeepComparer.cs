@@ -21,6 +21,7 @@ namespace DeepComparerNS
         // ===========================
         // Public configuration & result types
         // ===========================
+
         /// <summary>
         /// Specifies the action to take when the maximum recursion depth is reached
         /// during a deep object comparison.
@@ -274,19 +275,7 @@ namespace DeepComparerNS
             }
 
             if (IsWeakReferenceType(ta)) return true;
-            /*  Before:
-            if (IsSimpleComparable(ta, options) || (ctx.CustomSimpleTypePredicate?.Invoke(ta) ?? false))
-            {
-                if (!Equals(a, b))
-                {
-                    var msg = $"{path}: Values differ ({FormatValue(a)} vs {FormatValue(b)})";
-                    if (diffs is not null) diffs.Add(msg); else Debug.WriteLine(msg);
-                    return false;
-                }
-                return true;
-            }
-            */
-            // After:
+
             if (IsSimpleComparable(ta, ctx))
             {
                 if (!Equals(a, b))
@@ -639,62 +628,6 @@ return false;
             t == typeof(WeakReference) ||
             (t.IsGenericType && t.GetGenericTypeDefinition() == typeof(WeakReference<>));
 
-        /*
-        private static bool IsSimpleComparable(Type t) =>
-            _simpleTypeCache.GetOrAdd(t, static tt =>
-            {
-                if (tt.IsPrimitive || tt.IsEnum) return true;
-
-                if (tt == typeof(string) || tt == typeof(decimal) ||
-                    tt == typeof(DateTime) || tt == typeof(DateTimeOffset) ||
-                    tt == typeof(TimeSpan) || tt == typeof(Guid))
-                    return true;
-
-                // Nullable<T> where T simple
-                var ut = Nullable.GetUnderlyingType(tt);
-                if (ut is not null && IsSimpleComparable(ut)) return true;
-
-                // WPF/BCL structs (Point, Size, Rect, Thickness, Color, etc.) – value types have reliable Equals
-                if (tt.IsValueType) return true;
-
-                // IComparable on reference types – assume stable value semantics
-                if (typeof(IComparable).IsAssignableFrom(tt)) return true;
-
-                return false;
-            });
-        */
-        /*
-        private static bool IsSimpleComparable(Type type, DeepComparer.CompareOptions options)
-        {
-            // Include CustomSimpleTypePredicate in cache key to ensure correct behavior
-            var key = (type, options.CustomSimpleTypePredicate);
-
-            if (_simpleTypeCache.TryGetValue(key, out var cached))
-                return cached;
-
-            // 1. Custom predicate check first
-            if (options.CustomSimpleTypePredicate?.Invoke(type) == true)
-            {
-                _simpleTypeCache[key] = true;
-                return true;
-            }
-
-            // 2. Default "simple" type checks
-            bool result =
-                type.IsPrimitive ||
-                type.IsEnum ||
-                type == typeof(string) ||
-                type == typeof(decimal) ||
-                type == typeof(DateTime) ||
-                type == typeof(DateTimeOffset) ||
-                type == typeof(TimeSpan) ||
-                type == typeof(Guid);
-
-            // 3. Cache result
-            _simpleTypeCache[key] = result;
-            return result;
-        }
-        */
         // Thread-safe cache for built-in "simple" type determination (predicate-independent)
         private static readonly ConcurrentDictionary<Type, bool> _builtinSimpleTypeCache = new();
 

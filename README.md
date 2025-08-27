@@ -1,6 +1,6 @@
 ﻿# DeepComparer
 
-[![Build Status](https://github.com/YourGitHubUser/DeepComparer/actions/workflows/ci.yml/badge.svg)](https://github.com/YourGitHubUser/DeepComparer/actions/workflows/ci.yml)
+[![Build Status](https://github.com/LetMeInside/DeepComparer/actions/workflows/ci.yml/badge.svg)](https://github.com/LetMeInside/DeepComparer/actions/workflows/ci.yml)
 [![NuGet Version](https://img.shields.io/nuget/v/DeepComparer.svg)](https://www.nuget.org/packages/DeepComparer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
@@ -43,6 +43,8 @@ if (!result.AreEqual)
 ```
 ## Documentation
 
+See the full [documentation index](docs/index.md) for all guides and references.
+
 - Workflow Diagram
 - Benchmark Results
 - ReactiveUI Examples
@@ -50,6 +52,7 @@ if (!result.AreEqual)
 - Versioning Guide
 - Release Checklist
 - Contributing Guidelines
+
 
 ## Installation
 
