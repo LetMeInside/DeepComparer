@@ -34,6 +34,16 @@ DeepComparer is a **high-performance object comparison library** for .NET 9, bui
 ```csharp
 using DeepComparerNS;
 
+// A tiny POCO for the examples
+public sealed class Person
+{
+    public string Name { get; set; } = "";
+    public int Age { get; set; }
+}
+
+var obj1 = new Person { Name = "Alice", Age = 30 };
+var obj2 = new Person { Name = "Alice", Age = 31 };
+
 // Basic equality check
 var areEqual = DeepComparer.CompareProperties(obj1, obj2);
 
@@ -45,6 +55,109 @@ if (!result.AreEqual)
         Console.WriteLine(diff);
 }
 ```
+
+## Additional Comparison Configuration
+
+```csharp
+// ===============================
+// Basic usage samples for DeepComparer
+// ===============================
+
+using DeepComparerNS; // the root namespace of DeepComparer
+using static DeepComparerNS.DeepComparer; // optional: lets you reference CompareOptions/DepthBehavior without prefix
+
+// A tiny POCO for the examples
+public sealed class Person
+{
+    public string Name { get; set; } = "";
+    public int Age { get; set; }
+}
+
+public static class DeepComparerReadmeSamples
+{
+    public static void Run()
+    {
+        var obj1 = new Person { Name = "Alice", Age = 30 };
+        var obj2 = new Person { Name = "Alice", Age = 31 };
+
+        // --------------------------------------------------------------------
+        // 1) Using Boolean Toggles
+        //    Signature: CompareProperties<T>(T obj1, T obj2, bool publicOnly = true, bool propertiesOnly = true, bool jsonIgnore = true)
+        //
+        //    - publicOnly:
+        //        true  → only public members are compared
+        //        false → public + non-public (protected/private) are compared
+        //    - propertiesOnly:
+        //        true  → only properties are compared (fields ignored)
+        //        false → properties and fields are compared
+        //    - jsonIgnore:
+        //        true  → members marked with [Newtonsoft.Json.JsonIgnore] are ignored
+        //        false → members marked with [JsonIgnore] are included in comparison
+        // --------------------------------------------------------------------
+        bool areEqualWithToggles = DeepComparer.CompareProperties(
+            obj1,
+            obj2,
+            publicOnly: true,
+            propertiesOnly: false,
+            jsonIgnore: false
+        );
+
+        // --------------------------------------------------------------------
+        // 2) Using CompareOptions (recommended for clarity/extensibility)
+        //
+        //    Defaults (as configured in your library):
+        //      - MaxDepth = 20
+        //      - OnMaxDepthReached = DepthBehavior.TreatAsDifferent
+        //
+        //    OnMaxDepthReached behavior:
+        //      - DepthBehavior.TreatAsEqual      → stop descending; consider that branch equal
+        //      - DepthBehavior.TreatAsDifferent  → stop descending; flag that branch as different (default)
+        //      - DepthBehavior.LogDifference     → stop descending; log a warning to debug output
+        //
+        //    CustomSimpleTypePredicate:
+        //      - A Func<Type,bool> to mark additional types as “simple” (compared directly),
+        //        e.g., t => t == typeof(MyValueObject)
+        // --------------------------------------------------------------------
+        var options = new DeepComparer.CompareOptions
+        {
+            MaxDepth = 20,
+            OnMaxDepthReached = DepthBehavior.TreatAsDifferent, // matches your default
+            CustomSimpleTypePredicate = null
+        };
+
+        bool areEqualWithOptions = DeepComparer.CompareProperties(
+            obj1,
+            obj2,
+            publicOnly: true,
+            propertiesOnly: false,
+            jsonIgnore: false,
+            options: options
+        );
+
+        // (Optional) If you want a detailed report instead of just a bool:
+        // var report = DeepComparer.ComparePropertiesWithReport(obj1, obj2, true, false, false, options);
+        // if (!report.AreEqual) { foreach (var d in report.Differences) System.Diagnostics.Debug.WriteLine(d); }
+    }
+}
+
+```
+### Boolean Toggle Reference
+
+| Parameter       | Type  | Default | Description |
+|-----------------|-------|---------|-------------|
+| `publicOnly`    | bool  | `true`  | `true` → Only public members are compared. `false` → Public + non-public (protected/private) are compared. |
+| `propertiesOnly`| bool  | `true`  | `true` → Only properties are compared (fields ignored). `false` → Properties and fields are compared. |
+| `jsonIgnore`    | bool  | `true`  | `true` → Members marked with `[JsonIgnore]` are ignored. `false` → They are included in comparison. |
+
+### CompareOptions Reference
+
+| Option                     | Type                                   | Default Value                   | Description |
+|---------------------------|----------------------------------------|---------------------------------|-------------|
+| `MaxDepth`                | int                                    | `20`                            | Maximum recursion depth for nested objects. |
+| `DepthBehavior`           | `DepthBehavior` enum                  | `DepthBehavior.Ignore`          | Behavior when maximum depth is reached: <br> - `Ignore`: Skips further nested comparisons.<br> - `TreatAsDifferent`: Marks remaining properties as different and logs a warning.<br> - `LogDifference`: Skips comparison but logs a warning. |
+| `CustomSimpleTypePredicate` | `Func<Type, bool>?`                   | `null`                          | Allows specifying a custom function to determine what is considered a "simple type". |
+
+
 ## Documentation
 
 See the full [documentation index](docs/index.md) for all guides and references.

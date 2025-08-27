@@ -3,7 +3,7 @@ name: Publish to NuGet
 on:
   push:
     tags:
-      - 'v*.*.*'  # Trigger when a version tag is pushed (e.g., v1.0.0)
+      - 'v*.*.*'  # Trigger on version tags like v1.0.0
 
 jobs:
   publish:
@@ -18,19 +18,25 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Extract Version from Tag
-        id: get_version
-        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
-
-      - name: Validate csproj Version
+      - name: Validate csproj version
+        shell: pwsh
         run: |
-          CSPROJ_VERSION=$(grep -oPm1 "(?<=<Version>)[^<]+" ./src/DeepComparer/DeepComparer.csproj)
-          echo "Tag version: $VERSION"
-          echo "csproj version: $CSPROJ_VERSION"
-          if [ "$CSPROJ_VERSION" != "$VERSION" ]; then
-            echo "Version mismatch! Update csproj to match tag."
+          $VERSION = "${{ github.ref_name }}".TrimStart("v")
+          $CSPROJ_PATH = "./src/DeepComparer/DeepComparer.csproj"
+          $CSPROJ_VERSION = Select-String -Path $CSPROJ_PATH -Pattern '<Version>(.*?)</Version>' | ForEach-Object { $_.Matches[0].Groups[1].Value }
+
+          if (-not $CSPROJ_VERSION) {
+            Write-Error "No <Version> tag found in $CSPROJ_PATH. Please add one before tagging a release."
             exit 1
-          fi
+          }
+
+          Write-Host "Tag version: $VERSION"
+          Write-Host "csproj version: $CSPROJ_VERSION"
+
+          if ($CSPROJ_VERSION -ne $VERSION) {
+            Write-Error "Version mismatch! Update csproj to match tag."
+            exit 1
+          }
 
       - name: Restore Dependencies
         run: dotnet restore ./src/DeepComparer.sln
