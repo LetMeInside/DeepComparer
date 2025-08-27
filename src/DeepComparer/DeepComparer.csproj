@@ -1,40 +1,18 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net9.0-windows</TargetFramework>
-    <Nullable>enable</Nullable>
-    <UseWPF>true</UseWPF>
-    <ImplicitUsings>enable</ImplicitUsings>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="docs\BENCHMARKS.md" />
-    <None Remove="docs\CONTRIBUTING.md" />
-    <None Remove="docs\Directory structure.md" />
-    <None Remove="docs\FINAL_DEVELOPER_CHECKLIST.md" />
-    <None Remove="docs\GitHub Actions CI workflow %28dotnet_yml%29.md" />
-    <None Remove="docs\GitHub Actions CI workflow %28dotnet_yml%29.yml" />
-    <None Remove="docs\GitHub Actions CI Workflow.md" />
-    <None Remove="docs\ISSUE_TEMPLATE.md" />
-    <None Remove="docs\NUGET_GUIDE.md" />
-    <None Remove="docs\Old_BENCHMARKS.md" />
-    <None Remove="docs\Old_CONTRIBUTING.md" />
-    <None Remove="docs\Old_REACTIVEUI_EXAMPLES.md" />
-    <None Remove="docs\Old_Readme.md" />
-    <None Remove="docs\Old_README2.md" />
-    <None Remove="docs\Old_ROSLYN_ANALYZER.md" />
-    <None Remove="docs\PowerShell Setup Script.md" />
-    <None Remove="docs\PULL_REQUEST_TEMPLATE.md" />
-    <None Remove="docs\REACTIVEUI_EXAMPLES.md" />
-    <None Remove="docs\README.md" />
-    <None Remove="docs\RELEASE_CHECKLIST.md" />
-    <None Remove="docs\ROSLYN_ANALYZER.md" />
-    <None Remove="docs\setup.ps1" />
-    <None Remove="docs\VERSIONING_GUIDE.md" />
-    <None Remove="docs\Workflow.md" />
-    <None Remove="docs\WORKFLOW_DIAGRAM.md" />
-  </ItemGroup>
-
+	<PropertyGroup>
+		<TargetFramework>net9.0-windows</TargetFramework>
+		<Nullable>enable</Nullable>
+		<UseWPF>true</UseWPF>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<PackageIcon>logo.png</PackageIcon>
+		<!-- Moved into main PropertyGroup -->
+	</PropertyGroup>
+	
+	<PropertyGroup>
+		<Version>1.0.1</Version>
+	</PropertyGroup>
+	
 	<ItemGroup>
 		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
 			<_Parameter1>DeepComparer_xUnit.Tests</_Parameter1>
@@ -42,7 +20,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="docs\" />
+		<None Include="assets/logo.png" Pack="true" PackagePath="\"/>
 	</ItemGroup>
 	
+
+
 </Project>
+
