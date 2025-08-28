@@ -42,7 +42,11 @@ jobs:
         run: dotnet build ./src/DeepComparer.sln --configuration Release --no-restore
 
       - name: Create artifacts directory
-        run: mkdir artifacts
+        shell: pwsh
+        run: |
+          if (!(Test-Path artifacts)) {
+             New-Item -ItemType Directory -Path artifacts | Out-Null
+          }
 
       - name: Pack NuGet Package
         run: dotnet pack ./src/DeepComparer/DeepComparer.csproj --configuration Release --output ./artifacts
