@@ -5,7 +5,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 <p align="center">
-  <img src="src/DeepComparer/assets/logo.png" alt="DeepComparer Logo" width="200"/>
+  <img src="src/DeepComparer/logo.png" alt="DeepComparer Logo" width="200"/>
 </p>
 
 DeepComparer is a **high-performance object comparison library** for .NET 9, built for scenarios where:
