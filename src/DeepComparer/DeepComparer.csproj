@@ -5,7 +5,7 @@
 		<Nullable>enable</Nullable>
 		<UseWPF>true</UseWPF>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<PackageIcon>assets/logo.png</PackageIcon>
+		<PackageIcon>logo.png</PackageIcon>
 		<PackageId>DeepComparer</PackageId>
 		<Authors>LetMeInside</Authors>
 		<Description>A .NET library for deep object comparison</Description>
@@ -14,7 +14,7 @@
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		<Version>1.0.7</Version>
+		<Version>1.0.8</Version>
 	</PropertyGroup>
 	
 	<ItemGroup>
@@ -24,10 +24,13 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="assets/logo.png" Pack="true" PackagePath="" />
+		<None Include="assets/logo.png" Pack="true" PackagePath="\" />
 	</ItemGroup>
 	
 </Project>
+
+
+
 
 
 
