@@ -3,7 +3,7 @@ name: Publish to NuGet
 on:
   push:
     tags:
-      - 'v*.*.*'  # Trigger on version tags like v1.0.0
+      - 'v*.*.*'
 
 jobs:
   publish:
@@ -24,40 +24,25 @@ jobs:
           $VERSION = "${{ github.ref_name }}".TrimStart("v")
           $CSPROJ_PATH = "./src/DeepComparer/DeepComparer.csproj"
           $CSPROJ_VERSION = Select-String -Path $CSPROJ_PATH -Pattern '<Version>(.*?)</Version>' | ForEach-Object { $_.Matches[0].Groups[1].Value }
+          if (-not $CSPROJ_VERSION) { Write-Error "No <Version> tag found."; exit 1 }
+          if ($CSPROJ_VERSION -ne $VERSION) { Write-Error "Version mismatch!"; exit 1 }
 
-          if (-not $CSPROJ_VERSION) {
-            Write-Error "No <Version> tag found in $CSPROJ_PATH. Please add one before tagging a release."
-            exit 1
-          }
-
-          Write-Host "Tag version: $VERSION"
-          Write-Host "csproj version: $CSPROJ_VERSION"
-
-          if ($CSPROJ_VERSION -ne $VERSION) {
-            Write-Error "Version mismatch! Update csproj to match tag."
-            exit 1
-          }
-
-      - name: Check package icon size (<= 1 MB)
+      - name: Check package icon exists
         shell: pwsh
         run: |
-          $iconPath = "src/DeepComparer/assets/logo.png"
-          if (!(Test-Path $iconPath)) {
-            Write-Error "Icon not found at $iconPath"
-            exit 1
-          }
+          $iconPath = "src/DeepComparer/logo.png"
+          if (!(Test-Path $iconPath)) { Write-Error "Icon not found at $iconPath"; exit 1 }
           $size = (Get-Item $iconPath).Length
-          Write-Host "Icon size: $size bytes"
-          if ($size -gt 1MB) {
-            Write-Error "Icon exceeds 1 MB: $size"
-            exit 1
-          }
+          if ($size -gt 1MB) { Write-Error "Icon exceeds 1 MB: $size"; exit 1 }
 
       - name: Restore Dependencies
         run: dotnet restore ./src/DeepComparer.sln
 
       - name: Build Project
         run: dotnet build ./src/DeepComparer.sln --configuration Release --no-restore
+
+      - name: Create artifacts directory
+        run: mkdir artifacts
 
       - name: Pack NuGet Package
         run: dotnet pack ./src/DeepComparer/DeepComparer.csproj --configuration Release --output ./artifacts
@@ -66,11 +51,21 @@ jobs:
         shell: pwsh
         run: |
           $pkg = Get-ChildItem ./artifacts/*.nupkg -ErrorAction SilentlyContinue
-          if (-not $pkg) {
-            Write-Error "No NuGet package found in ./artifacts"
-            exit 1
-          }
+          if (-not $pkg) { Write-Error "No NuGet package found."; exit 1 }
           Write-Host "Found package: $($pkg.FullName)"
 
+      - name: Verify icon inside NuGet package
+        shell: pwsh
+        run: |
+          Add-Type -AssemblyName System.IO.Compression.FileSystem
+          $pkg = Get-ChildItem ./artifacts/*.nupkg | Select-Object -First 1
+          $zip = [System.IO.Compression.ZipFile]::OpenRead($pkg.FullName)
+          $entry = $zip.Entries | Where-Object { $_.FullName -eq "logo.png" }
+          if (-not $entry) { Write-Error "Icon not found in package."; $zip.Dispose(); exit 1 }
+          $zip.Dispose()
+
       - name: Publish to NuGet
-        run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
+        shell: pwsh
+        run: |
+          $pkg = Get-ChildItem ./artifacts/*.nupkg | Select-Object -First 1
+          dotnet nuget push $pkg.FullName --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json

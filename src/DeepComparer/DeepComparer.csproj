@@ -14,7 +14,7 @@
 	</PropertyGroup>
 	
 	<PropertyGroup>
-		<Version>1.0.8</Version>
+		<Version>1.0.16</Version>
 	</PropertyGroup>
 	
 	<ItemGroup>
@@ -24,10 +24,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Include="assets/logo.png" Pack="true" PackagePath="\" />
+		<None Include="logo.png" Pack="true" PackagePath="" />
 	</ItemGroup>
 	
 </Project>
+
+
+
+
+
+
+
+
+
 
 
 
