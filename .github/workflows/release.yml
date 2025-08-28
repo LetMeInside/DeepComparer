@@ -3,7 +3,7 @@ name: Publish to NuGet
 on:
   push:
     tags:
-      - 'v*.*.*'  # Trigger on version tags like v1.0.0
+      - 'v*.*.*' # Trigger on version tags like v1.0.0
 
 jobs:
   publish:
@@ -18,7 +18,7 @@ jobs:
         with:
           dotnet-version: '9.0.x'
 
-      - name: Validate csproj version
+      - name: Validate csproj Version
         shell: pwsh
         run: |
           $VERSION = "${{ github.ref_name }}".TrimStart("v")
@@ -41,11 +41,11 @@ jobs:
       - name: Restore Dependencies
         run: dotnet restore ./src/DeepComparer.sln
 
-      - name: Build Solution
+      - name: Build Project
         run: dotnet build ./src/DeepComparer.sln --configuration Release --no-restore
 
       - name: Pack NuGet Package
-        run: dotnet pack ./src/DeepComparer/DeepComparer.csproj --configuration Release --output ./artifacts
+        run: dotnet pack ./src/DeepComparer/DeepComparer.csproj --configuration Release --no-build --output ./artifacts
 
       - name: Publish to NuGet
         run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
