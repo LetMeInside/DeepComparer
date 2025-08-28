@@ -3,7 +3,7 @@ name: Publish to NuGet
 on:
   push:
     tags:
-      - 'v*.*.*' # Trigger on version tags like v1.0.0
+      - 'v*.*.*'  # Trigger on version tags like v1.0.0
 
 jobs:
   publish:
@@ -38,6 +38,21 @@ jobs:
             exit 1
           }
 
+      - name: Check package icon size (<= 1 MB)
+        shell: pwsh
+        run: |
+          $iconPath = "src/DeepComparer/assets/logo.png"
+          if (!(Test-Path $iconPath)) {
+            Write-Error "Icon not found at $iconPath"
+            exit 1
+          }
+          $size = (Get-Item $iconPath).Length
+          Write-Host "Icon size: $size bytes"
+          if ($size -gt 1MB) {
+            Write-Error "Icon exceeds 1 MB: $size"
+            exit 1
+          }
+
       - name: Restore Dependencies
         run: dotnet restore ./src/DeepComparer.sln
 
@@ -46,6 +61,10 @@ jobs:
 
       - name: Pack NuGet Package
         run: dotnet pack ./src/DeepComparer/DeepComparer.csproj --configuration Release --no-build --output ./artifacts
+
+      - name: Show packed artifacts
+        shell: pwsh
+        run: Get-ChildItem -Recurse ./artifacts | ForEach-Object { Write-Host $_.FullName }
 
       - name: Publish to NuGet
         run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
