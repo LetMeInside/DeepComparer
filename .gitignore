@@ -6,3 +6,5 @@ obj/
 *.userprefs
 *.ncrunchsolution
 *.ncrunchproject
+artifacts/
+*.nupkg

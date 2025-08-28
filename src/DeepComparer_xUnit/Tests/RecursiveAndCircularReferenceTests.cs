@@ -26,7 +26,7 @@ namespace DeepComparer_xUnit.Tests
                 cur = cur.Next;
             }
 
-            Assert.True(DeepComparer.CompareProperties(a, b, true, true, true, new DeepComparer.CompareOptions
+            Assert.True(DeepComparer.CompareProperties(a, b, true, true, true, new CompareOptions
             {
                 MaxDepth = 100
             }));

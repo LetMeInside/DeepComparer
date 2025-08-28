@@ -16,79 +16,8 @@ namespace DeepComparerNS
     /// with caching for performance, circular reference detection, and
     /// optional detailed difference reporting.
     /// </summary>
-    public static class DeepComparer
+    public static partial class DeepComparer
     {
-        // ===========================
-        // Public configuration & result types
-        // ===========================
-
-        /// <summary>
-        /// Specifies the action to take when the maximum recursion depth is reached
-        /// during a deep object comparison.
-        /// </summary>
-        public enum OnMaxDepthReached
-        {
-            /// <summary>
-            /// Treat objects at maximum depth as equal.
-            /// </summary>
-            TreatAsEqual,
-
-            /// <summary>
-            /// Treat objects at maximum depth as different.
-            /// </summary>
-            TreatAsDifferent,
-
-            /// <summary>
-            /// Log a difference entry and continue without further traversal.
-            /// </summary>
-            LogDifference
-        }
-
-        public enum DepthBehavior
-        {
-            TreatAsEqual = 0,
-            TreatAsDifferent = 1,
-            LogDifference = 2
-        }
-
-        /// <summary>
-        /// Comparison options. Defaults match your request:
-        /// MaxDepth = 20, OnMaxDepthReached = TreatAsDifferent.
-        /// </summary>
-        public sealed class CompareOptions
-        {
-            /// <summary>
-            /// Maximum recursion depth. Root comparison starts at depth 0.
-            /// When null, depth is unlimited. Default: 20.
-            /// </summary>
-            public int? MaxDepth { get; set; } = 20;
-
-            /// <summary>
-            /// What to do when MaxDepth is reached. Default: TreatAsDifferent.
-            /// </summary>
-            public DepthBehavior OnMaxDepthReached { get; set; } = DepthBehavior.TreatAsDifferent;
-
-            /// <summary>
-            /// Optional predicate to treat additional types as "simple" (compared via Equals).
-            /// Return true to mark a type as simple.
-            /// </summary>
-            public Func<Type, bool>? CustomSimpleTypePredicate { get; set; }
-        }
-
-        /// <summary>
-        /// Represents the result of a deep comparison between two objects,
-        /// including whether they are equal and a list of any differences found.
-        /// </summary>
-        public class CompareResult
-        {
-            public bool AreEqual { get; set; }
-            public List<string> Differences { get; } = new();
-
-            public override string ToString() =>
-                AreEqual ? "Objects are equal."
-                         : "Objects differ:\n - " + string.Join("\n - ", Differences);
-        }
-
         // ===========================
         // Public APIs (bool and detailed)
         // ===========================
@@ -249,7 +178,7 @@ namespace DeepComparerNS
         // Core Comparison
         // ===========================
 
-        private static bool CompareObjects(object? a, object? b, CompareContext ctx, List<string>? diffs, string path, int depth, DeepComparer.CompareOptions options)
+        private static bool CompareObjects(object? a, object? b, CompareContext ctx, List<string>? diffs, string path, int depth, CompareOptions options)
         {
             // Depth control
             if (ctx.MaxDepth.HasValue && depth > ctx.MaxDepth.Value)
@@ -353,7 +282,7 @@ namespace DeepComparerNS
             return false;
         }
 
-        private static bool CompareEnumerablesUnordered(IEnumerable a, IEnumerable b, CompareContext ctx, List<string>? diffs, string path, int depth, DeepComparer.CompareOptions options)
+        private static bool CompareEnumerablesUnordered(IEnumerable a, IEnumerable b, CompareContext ctx, List<string>? diffs, string path, int depth, CompareOptions options)
         {
             if (ctx.MaxDepth.HasValue && depth > ctx.MaxDepth.Value)
                 return HandleMaxDepth(ctx, diffs, path);

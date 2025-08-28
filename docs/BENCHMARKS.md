@@ -49,7 +49,7 @@ public class ComparisonBenchmarks
         DeepComparer.CompareProperties(obj1, obj2);
 
     [Benchmark]
-    public DeepComparer.CompareResult CompareWithReport() =>
+    public CompareResult CompareWithReport() =>
         DeepComparer.ComparePropertiesWithReport(obj1, obj2);
 }
 

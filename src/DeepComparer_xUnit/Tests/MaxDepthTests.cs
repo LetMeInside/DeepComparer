@@ -29,10 +29,10 @@ namespace DeepComparer_xUnit.Tests
             for (int i = 0; i < 21; i++) cur = cur!.Next!;
             cur!.Value = 999;
 
-            var opts = new DeepComparer.CompareOptions
+            var opts = new CompareOptions
             {
                 MaxDepth = 20,
-                OnMaxDepthReached = DeepComparer.DepthBehavior.TreatAsEqual
+                OnMaxDepthReached = DepthBehavior.TreatAsEqual
             };
 
             // Despite a deep difference, we treat as equal after depth limit
@@ -51,10 +51,10 @@ namespace DeepComparer_xUnit.Tests
             for (int i = 0; i < 21; i++) cur = cur!.Next!;
             cur!.Value = 999;
 
-            var opts = new DeepComparer.CompareOptions
+            var opts = new CompareOptions
             {
                 MaxDepth = 20,
-                OnMaxDepthReached = DeepComparer.DepthBehavior.TreatAsDifferent
+                OnMaxDepthReached = DepthBehavior.TreatAsDifferent
             };
 
             Assert.False(DeepComparer.CompareProperties(a, b, options: opts));
@@ -73,10 +73,10 @@ namespace DeepComparer_xUnit.Tests
             for (int i = 0; i < 21; i++) cur = cur!.Next!;
             cur!.Value = 999;
 
-            var opts = new DeepComparer.CompareOptions
+            var opts = new CompareOptions
             {
                 MaxDepth = 20,
-                OnMaxDepthReached = DeepComparer.DepthBehavior.LogDifference
+                OnMaxDepthReached = DepthBehavior.LogDifference
             };
 
             // Should still be considered equal overall (depth exceeded but we only log)

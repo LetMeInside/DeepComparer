@@ -88,7 +88,7 @@ if (!result.AreEqual)
 ## Example 3 – Custom Comparison with CompareOptions
 
 ```csharp
-var options = new DeepComparer.CompareOptions
+var options = new CompareOptions
 {
     CustomSimpleTypePredicate = t => t == typeof(SourceList<int>)
 };

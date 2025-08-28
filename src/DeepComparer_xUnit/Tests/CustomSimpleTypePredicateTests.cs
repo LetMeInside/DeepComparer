@@ -1,7 +1,7 @@
 ﻿using DeepComparerNS;
 using System;
 using Xunit;
-using static DeepComparerNS.DeepComparer;
+
 
 namespace DeepComparer_xUnit.Tests
 {
@@ -29,7 +29,7 @@ namespace DeepComparer_xUnit.Tests
             var obj1 = new ComplexType { SerializedData = "ABC123" };
             var obj2 = new ComplexType { SerializedData = "ABC123" };
 
-            var options = new DeepComparer.CompareOptions
+            var options = new CompareOptions
             {
                 MaxDepth = 20,
                 OnMaxDepthReached = DepthBehavior.TreatAsDifferent,
@@ -54,7 +54,7 @@ namespace DeepComparer_xUnit.Tests
             //{
             //    CustomSimpleTypePredicate = t => t == typeof(ComplexType)
             //};
-            var options = new DeepComparer.CompareOptions()
+            var options = new CompareOptions()
             {
                 MaxDepth = 20,
                 OnMaxDepthReached = DepthBehavior.TreatAsDifferent,

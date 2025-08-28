@@ -64,7 +64,6 @@ if (!result.AreEqual)
 // ===============================
 
 using DeepComparerNS; // the root namespace of DeepComparer
-using static DeepComparerNS.DeepComparer; // optional: lets you reference CompareOptions/DepthBehavior without prefix
 
 // A tiny POCO for the examples
 public sealed class Person
@@ -118,14 +117,14 @@ public static class DeepComparerReadmeSamples
         //      - A Func<Type,bool> to mark additional types as “simple” (compared directly),
         //        e.g., t => t == typeof(MyValueObject)
         // --------------------------------------------------------------------
-        var options = new DeepComparer.CompareOptions
+        var options = new CompareOptions
         {
             MaxDepth = 20,
             OnMaxDepthReached = DepthBehavior.TreatAsDifferent, // matches your default
             CustomSimpleTypePredicate = null
         };
 
-        bool areEqualWithOptions = DeepComparer.CompareProperties(
+        bool areEqualWithOptions = CompareProperties(
             obj1,
             obj2,
             publicOnly: true,
