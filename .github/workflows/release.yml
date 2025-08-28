@@ -60,11 +60,17 @@ jobs:
         run: dotnet build ./src/DeepComparer.sln --configuration Release --no-restore
 
       - name: Pack NuGet Package
-        run: dotnet pack ./src/DeepComparer/DeepComparer.csproj --configuration Release --no-build --output ./artifacts
+        run: dotnet pack ./src/DeepComparer/DeepComparer.csproj --configuration Release --output ./artifacts
 
-      - name: Show packed artifacts
+      - name: Verify Package Exists
         shell: pwsh
-        run: Get-ChildItem -Recurse ./artifacts | ForEach-Object { Write-Host $_.FullName }
+        run: |
+          $pkg = Get-ChildItem ./artifacts/*.nupkg -ErrorAction SilentlyContinue
+          if (-not $pkg) {
+            Write-Error "No NuGet package found in ./artifacts"
+            exit 1
+          }
+          Write-Host "Found package: $($pkg.FullName)"
 
       - name: Publish to NuGet
         run: dotnet nuget push ./artifacts/*.nupkg --api-key ${{ secrets.NUGET_API_KEY }} --source https://api.nuget.org/v3/index.json
