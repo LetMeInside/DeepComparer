@@ -36,7 +36,7 @@ namespace DeepComparer_xUnit.Tests
                 CustomSimpleTypePredicate = t => t == typeof(ComplexType)
             };
 
-            var result = DeepComparer.ComparePropertiesWithReport(obj1, obj2,true, true, true, options);
+            var result = DeepComparer.CompareWithReport(obj1, obj2,true, true, true, options);
             Assert.True(result.AreEqual);
         }
 
@@ -60,7 +60,7 @@ namespace DeepComparer_xUnit.Tests
                 OnMaxDepthReached = DepthBehavior.TreatAsDifferent,
                 CustomSimpleTypePredicate = t => t == typeof(ComplexType)
             };
-            var result = DeepComparer.ComparePropertiesWithReport(obj1, obj2, true, true,true, options);
+            var result = DeepComparer.CompareWithReport(obj1, obj2, true, true,true, options);
             Assert.False(result.AreEqual);
             Assert.Contains(result.Differences, d => d.Contains("Values differ"));
         }

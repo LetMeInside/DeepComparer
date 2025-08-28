@@ -13,7 +13,7 @@ namespace DeepComparer_xUnit.Tests
             var a = new WithCollections { Numbers = new List<int> { 1, 2, 3 } };
             var b = new WithCollections { Numbers = new List<int> { 3, 1, 2 } };
 
-            Assert.True(DeepComparer.CompareProperties(a, b));
+            Assert.True(DeepComparer.Compare(a, b));
         }
 
         [Fact]
@@ -22,7 +22,7 @@ namespace DeepComparer_xUnit.Tests
             var a = new WithCollections { Numbers = new List<int> { 1, 2, 3 } };
             var b = new WithCollections { Numbers = new List<int> { 1, 2, 3, 4 } };
 
-            Assert.False(DeepComparer.CompareProperties(a, b));
+            Assert.False(DeepComparer.Compare(a, b));
         }
 
         [Fact]
@@ -31,10 +31,10 @@ namespace DeepComparer_xUnit.Tests
             var a = new WithCollections { Numbers = [1, 2, 3] };
             var b = new WithCollections { Numbers = [1, 2, 4] };
 
-            var eq = DeepComparer.CompareProperties(a, b);
+            var eq = DeepComparer.Compare(a, b);
             Assert.False(eq);
 
-            var report = DeepComparer.ComparePropertiesWithReport(a, b);
+            var report = DeepComparer.CompareWithReport(a, b);
             Assert.False(report.AreEqual);
             Assert.Contains(report.Differences, d => d.Contains("Numbers"));
         }
@@ -45,7 +45,7 @@ namespace DeepComparer_xUnit.Tests
             var a = new WithCollections { Tags = new HashSet<string> { "x", "y" } };
             var b = new WithCollections { Tags = new HashSet<string> { "y", "x" } };
 
-            Assert.True(DeepComparer.CompareProperties(a, b));
+            Assert.True(DeepComparer.Compare(a, b));
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace DeepComparer_xUnit.Tests
             var b = new WithCollections();
             b.Scores["b"] = 2; b.Scores["a"] = 1;
 
-            Assert.True(DeepComparer.CompareProperties(a, b));
+            Assert.True(DeepComparer.Compare(a, b));
         }
 
         [Fact]
@@ -69,7 +69,7 @@ namespace DeepComparer_xUnit.Tests
             var b = new WithCollections();
             b.FakeList.Items.AddRange(new[] { "c", "b", "a" });
 
-            Assert.True(DeepComparer.CompareProperties(a, b));
+            Assert.True(DeepComparer.Compare(a, b));
         }
 
         [Fact]
@@ -83,7 +83,7 @@ namespace DeepComparer_xUnit.Tests
             b.FakeCache.Inner["x"] = 20;
             b.FakeCache.Inner["y"] = 10;
 
-            Assert.True(DeepComparer.CompareProperties(a, b));
+            Assert.True(DeepComparer.Compare(a, b));
         }
 
         [Fact]
@@ -100,7 +100,7 @@ namespace DeepComparer_xUnit.Tests
             var a = new Person { Name = "root", Friends = new() { p1, p2, p3 } };
             var b = new Person { Name = "root", Friends = new() { p3, p1, p2 } };
 
-            Assert.True(DeepComparer.CompareProperties(a, b));
+            Assert.True(DeepComparer.Compare(a, b));
         }
     }
 }

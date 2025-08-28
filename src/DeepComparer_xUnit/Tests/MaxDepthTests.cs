@@ -36,9 +36,9 @@ namespace DeepComparer_xUnit.Tests
             };
 
             // Despite a deep difference, we treat as equal after depth limit
-            Assert.True(DeepComparer.CompareProperties(a, b, options: opts));
+            Assert.True(DeepComparer.Compare(a, b, options: opts));
 
-            var report = DeepComparer.ComparePropertiesWithReport(a, b, options: opts);
+            var report = DeepComparer.CompareWithReport(a, b, options: opts);
             Assert.True(report.AreEqual);
         }
 
@@ -57,9 +57,9 @@ namespace DeepComparer_xUnit.Tests
                 OnMaxDepthReached = DepthBehavior.TreatAsDifferent
             };
 
-            Assert.False(DeepComparer.CompareProperties(a, b, options: opts));
+            Assert.False(DeepComparer.Compare(a, b, options: opts));
 
-            var report = DeepComparer.ComparePropertiesWithReport(a, b, options: opts);
+            var report = DeepComparer.CompareWithReport(a, b, options: opts);
             Assert.False(report.AreEqual);
             Assert.Contains(report.Differences, d => d.Contains("Depth limit"));
         }
@@ -80,9 +80,9 @@ namespace DeepComparer_xUnit.Tests
             };
 
             // Should still be considered equal overall (depth exceeded but we only log)
-            Assert.True(DeepComparer.CompareProperties(a, b, options: opts));
+            Assert.True(DeepComparer.Compare(a, b, options: opts));
 
-            var report = DeepComparer.ComparePropertiesWithReport(a, b, options: opts);
+            var report = DeepComparer.CompareWithReport(a, b, options: opts);
             Assert.True(report.AreEqual);
             // But we log a difference line about depth
             Assert.Contains(report.Differences, d => d.Contains("Depth limit"));

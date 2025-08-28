@@ -12,9 +12,9 @@ namespace DeepComparer.Analyzer
     {
         public const string DiagnosticId = "DC001";
         private static readonly LocalizableString Title =
-            "CompareProperties should be called with CompareOptions";
+            "Compare should be called with CompareOptions";
         private static readonly LocalizableString MessageFormat =
-            "Call to CompareProperties does not pass a CompareOptions instance";
+            "Call to Compare does not pass a CompareOptions instance";
         private const string Category = "Usage";
 
         private static DiagnosticDescriptor Rule = new DiagnosticDescriptor(
@@ -41,7 +41,7 @@ namespace DeepComparer.Analyzer
                 return;
 
             // Check method name
-            if (methodSymbol.Name != "CompareProperties")
+            if (methodSymbol.Name != "Compare")
                 return;
 
             // Check containing type
