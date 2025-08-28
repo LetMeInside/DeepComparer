@@ -31,7 +31,7 @@ namespace DeepComparer.Benchmarks
         [Benchmark]
         public bool Compare_Objects()
         {
-            return DeepComparerNS.DeepComparer.CompareProperties(_obj1, _obj2);
+            return DeepComparerNS.DeepComparer.Compare(_obj1, _obj2);
         }
 
         public class SampleData

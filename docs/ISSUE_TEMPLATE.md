@@ -26,7 +26,7 @@ Provide a clear and concise description.
 ```csharp
    var obj1 = new MyClass { Value = 1 };
    var obj2 = new MyClass { Value = 2 };
-   var result = DeepComparer.CompareProperties(obj1, obj2);
+   var result = DeepComparer.Compare(obj1, obj2);
 ```
 
 2. Describe expected vs actual behavior:

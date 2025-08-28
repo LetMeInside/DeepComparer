@@ -5,7 +5,7 @@ This guide explains how to create a **Roslyn Analyzer** that enforces best pract
 ---
 
 ## Purpose
-- Warn developers when `DeepComparer.CompareProperties` or `ComparePropertiesWithReport` is called **without explicitly passing CompareOptions**.
+- Warn developers when `DeepComparer.Compare` or `CompareWithReport` is called **without explicitly passing CompareOptions**.
 - Suggests using `CompareOptions` for:
   - Custom simple-type predicates
   - Max depth settings
@@ -61,7 +61,7 @@ namespace DeepComparerAnalyzer
                 return;
 
             if (symbol.ContainingType.Name == "DeepComparer" &&
-                symbol.Name.StartsWith("CompareProperties") &&
+                symbol.Name.StartsWith("Compare") &&
                 !symbol.Parameters.Any(p => p.Type.Name == "CompareOptions"))
             {
                 var diagnostic = Diagnostic.Create(Rule, invocation.GetLocation());
@@ -91,7 +91,7 @@ namespace DeepComparerAnalyzer
 4. Calls like:
 
 ```csharp
-DeepComparer.CompareProperties(obj1, obj2);
+DeepComparer.Compare(obj1, obj2);
 ```
 will trigger a DC0001 warning.
 

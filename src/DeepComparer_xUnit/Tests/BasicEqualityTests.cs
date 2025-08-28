@@ -15,16 +15,16 @@ namespace DeepComparer_xUnit.Tests
         [Fact]
         public void SimpleTypes_AreEqual()
         {
-            Assert.True(DeepComparer.CompareProperties(5, 5));
-            Assert.True(DeepComparer.CompareProperties("abc", "abc"));
+            Assert.True(DeepComparer.Compare(5, 5));
+            Assert.True(DeepComparer.Compare("abc", "abc"));
         }
 
 
         [Fact]
         public void SimpleTypes_AreNotEqual()
         {
-            Assert.False(DeepComparer.CompareProperties(5, 6));
-            Assert.False(DeepComparer.CompareProperties("abc", "def"));
+            Assert.False(DeepComparer.Compare(5, 6));
+            Assert.False(DeepComparer.Compare("abc", "def"));
         }
 
         [Fact]
@@ -32,8 +32,8 @@ namespace DeepComparer_xUnit.Tests
         {
             Person? a = null;
             Person? b = new Person();
-            Assert.False(DeepComparer.CompareProperties(a, b));
-            Assert.True(DeepComparer.CompareProperties<Person?>(null, null));
+            Assert.False(DeepComparer.Compare(a, b));
+            Assert.True(DeepComparer.Compare<Person?>(null, null));
         }
 
         [Fact]
@@ -41,7 +41,7 @@ namespace DeepComparer_xUnit.Tests
         {
             object a = 5;
             object b = "5";
-            Assert.False(DeepComparer.CompareProperties(a, b));
+            Assert.False(DeepComparer.Compare(a, b));
         }
 
         [Fact]
@@ -50,9 +50,9 @@ namespace DeepComparer_xUnit.Tests
             var p1 = new Person { Name = "A", Age = 30 };
             var p2 = new Person { Name = "A", Age = 30 };
 
-            Assert.True(DeepComparer.CompareProperties(p1, p2));
+            Assert.True(DeepComparer.Compare(p1, p2));
 
-            var report = DeepComparer.ComparePropertiesWithReport(p1, p2);
+            var report = DeepComparer.CompareWithReport(p1, p2);
             Assert.True(report.AreEqual);
             Assert.Empty(report.Differences);
         }

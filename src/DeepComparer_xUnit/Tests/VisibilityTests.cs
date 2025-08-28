@@ -26,7 +26,7 @@ namespace DeepComparer_xUnit
                 b.SetProtected("Y");
 
                 // publicOnly = true (default) => still equal
-                Assert.True(DeepComparer.CompareProperties(a, b));
+                Assert.True(DeepComparer.Compare(a, b));
             }
 
             [Fact]
@@ -39,7 +39,7 @@ namespace DeepComparer_xUnit
                 b.SetPrivate(20);
 
                 // publicOnly = false => should spot difference
-                var report = DeepComparer.ComparePropertiesWithReport(a, b, publicOnly: false);
+                var report = DeepComparer.CompareWithReport(a, b, publicOnly: false);
                 Assert.False(report.AreEqual);
                 Assert.Contains(report.Differences, d => d.Contains("PrivateInt"));
             }

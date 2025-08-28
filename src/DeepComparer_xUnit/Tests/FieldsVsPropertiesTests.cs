@@ -15,7 +15,7 @@ namespace DeepComparer_xUnit.Tests
             b.PublicField = 42; // different field
 
             // propertiesOnly = true (default) => ignore field difference
-            Assert.True(DeepComparer.CompareProperties(a, b));
+            Assert.True(DeepComparer.Compare(a, b));
         }
 
         [Fact]
@@ -26,10 +26,10 @@ namespace DeepComparer_xUnit.Tests
             b.PublicField = 42;
 
             // propertiesOnly = false => compare fields too
-            var eq = DeepComparer.CompareProperties(a, b, propertiesOnly: false);
+            var eq = DeepComparer.Compare(a, b, propertiesOnly: false);
             Assert.False(eq);
 
-            var report = DeepComparer.ComparePropertiesWithReport(a, b, propertiesOnly: false);
+            var report = DeepComparer.CompareWithReport(a, b, propertiesOnly: false);
             Assert.False(report.AreEqual);
             Assert.Contains(report.Differences, d => d.Contains("PublicField"));
         }
@@ -42,7 +42,7 @@ namespace DeepComparer_xUnit.Tests
             a.SetPrivateField(1);
             b.SetPrivateField(999);
 
-            var report = DeepComparer.ComparePropertiesWithReport(a, b, publicOnly: false, propertiesOnly: false);
+            var report = DeepComparer.CompareWithReport(a, b, publicOnly: false, propertiesOnly: false);
             Assert.False(report.AreEqual);
             Assert.Contains(report.Differences, d => d.Contains("PrivateField"));
         }

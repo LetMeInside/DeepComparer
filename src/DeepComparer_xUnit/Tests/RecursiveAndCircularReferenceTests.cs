@@ -26,7 +26,7 @@ namespace DeepComparer_xUnit.Tests
                 cur = cur.Next;
             }
 
-            Assert.True(DeepComparer.CompareProperties(a, b, true, true, true, new CompareOptions
+            Assert.True(DeepComparer.Compare(a, b, true, true, true, new CompareOptions
             {
                 MaxDepth = 100
             }));
@@ -45,7 +45,7 @@ namespace DeepComparer_xUnit.Tests
             b1.Friends.Add(b2);
             b2.Friends.Add(b1); // cycle
 
-            Assert.True(DeepComparer.CompareProperties(a1, b1));
+            Assert.True(DeepComparer.Compare(a1, b1));
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace DeepComparer_xUnit.Tests
             };
 
             // Even though the referenced targets differ, WeakReference members are ignored
-            Assert.True(DeepComparer.CompareProperties(a, b));
+            Assert.True(DeepComparer.Compare(a, b));
         }
     }
 }

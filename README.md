@@ -45,10 +45,10 @@ var obj1 = new Person { Name = "Alice", Age = 30 };
 var obj2 = new Person { Name = "Alice", Age = 31 };
 
 // Basic equality check
-var areEqual = DeepComparer.CompareProperties(obj1, obj2);
+var areEqual = DeepComparer.Compare(obj1, obj2);
 
 // Detailed comparison with difference report
-var result = DeepComparer.ComparePropertiesWithReport(obj1, obj2);
+var result = DeepComparer.CompareWithReport(obj1, obj2);
 if (!result.AreEqual)
 {
     foreach (var diff in result.Differences)
@@ -81,7 +81,7 @@ public static class DeepComparerReadmeSamples
 
         // --------------------------------------------------------------------
         // 1) Using Boolean Toggles
-        //    Signature: CompareProperties<T>(T obj1, T obj2, bool publicOnly = true, bool propertiesOnly = true, bool jsonIgnore = true)
+        //    Signature: Compare<T>(T obj1, T obj2, bool publicOnly = true, bool propertiesOnly = true, bool jsonIgnore = true)
         //
         //    - publicOnly:
         //        true  → only public members are compared
@@ -93,7 +93,7 @@ public static class DeepComparerReadmeSamples
         //        true  → members marked with [Newtonsoft.Json.JsonIgnore] are ignored
         //        false → members marked with [JsonIgnore] are included in comparison
         // --------------------------------------------------------------------
-        bool areEqualWithToggles = DeepComparer.CompareProperties(
+        bool areEqualWithToggles = DeepComparer.Compare(
             obj1,
             obj2,
             publicOnly: true,
@@ -124,7 +124,7 @@ public static class DeepComparerReadmeSamples
             CustomSimpleTypePredicate = null
         };
 
-        bool areEqualWithOptions = CompareProperties(
+        bool areEqualWithOptions = Compare(
             obj1,
             obj2,
             publicOnly: true,
@@ -134,7 +134,7 @@ public static class DeepComparerReadmeSamples
         );
 
         // (Optional) If you want a detailed report instead of just a bool:
-        // var report = DeepComparer.ComparePropertiesWithReport(obj1, obj2, true, false, false, options);
+        // var report = DeepComparer.CompareWithReport(obj1, obj2, true, false, false, options);
         // if (!report.AreEqual) { foreach (var d in report.Differences) System.Diagnostics.Debug.WriteLine(d); }
     }
 }

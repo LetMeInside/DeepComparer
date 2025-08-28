@@ -32,7 +32,7 @@ public class ReactiveUITests
         list1.AddRange(new[] { 1, 2, 3 });
         list2.AddRange(new[] { 1, 3, 2 });
 
-        var result = DeepComparer.CompareProperties(list1, list2);
+        var result = DeepComparer.Compare(list1, list2);
 
         Assert.True(result);
     }
@@ -58,7 +58,7 @@ public class ReactiveUITests
         cache1.AddOrUpdate(new[] { new Item(1, "A"), new Item(2, "B") });
         cache2.AddOrUpdate(new[] { new Item(2, "B"), new Item(1, "A") });
 
-        var result = DeepComparer.CompareProperties(cache1, cache2);
+        var result = DeepComparer.Compare(cache1, cache2);
 
         Assert.True(result);
     }
@@ -76,7 +76,7 @@ var options = new DeepComparer.CompareOptions
     CustomSimpleTypePredicate = t => t == typeof(SourceList<int>)
 };
 
-var result = DeepComparer.ComparePropertiesWithReport(list1, list2, true, true, true, options);
+var result = DeepComparer.CompareWithReport(list1, list2, true, true, true, options);
 
 if (!result.AreEqual)
 {
@@ -93,7 +93,7 @@ var options = new CompareOptions
     CustomSimpleTypePredicate = t => t == typeof(SourceList<int>)
 };
 
-var result = DeepComparer.ComparePropertiesWithReport(list1, list2, true, true, true, options);
+var result = DeepComparer.CompareWithReport(list1, list2, true, true, true, options);
 
 if (!result.AreEqual)
 {

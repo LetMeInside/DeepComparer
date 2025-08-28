@@ -13,7 +13,7 @@ This project will provide compile-time diagnostics to help developers use the **
 
 ## Planned Features
 - **Missing CompareOptions Warning**  
-  Warn when `DeepComparer.CompareProperties` is called without a `CompareOptions` instance.
+  Warn when `DeepComparer.Compare` is called without a `CompareOptions` instance.
 
 - **Overuse of MaxDepth**  
   Highlight cases where extremely high `MaxDepth` values may impact performance.
@@ -24,7 +24,7 @@ This project will provide compile-time diagnostics to help developers use the **
 ---
 
 ## Current Status
-- Initial setup with a **basic diagnostic** that checks if `CompareProperties` is called without `CompareOptions`.
+- Initial setup with a **basic diagnostic** that checks if `Compare` is called without `CompareOptions`.
 
 ---
 

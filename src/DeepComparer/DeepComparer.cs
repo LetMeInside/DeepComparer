@@ -32,7 +32,7 @@ namespace DeepComparerNS
         /// <param name="propertiesOnly">If true, only properties (not fields) are compared.</param>
         /// <param name="jsonIgnore">If true, members marked with [JsonIgnore] are ignored.</param>
         /// <returns>True if the objects are deeply equal; otherwise, false.</returns>
-        public static bool CompareProperties<T>(
+        public static bool Compare<T>(
             T obj1, T obj2,
             bool publicOnly = true,
             bool propertiesOnly = true,
@@ -57,7 +57,7 @@ namespace DeepComparerNS
         /// A <see cref="CompareResult"/> object containing a boolean indicating equality
         /// and a list of differences, if any.
         /// </returns>
-        public static CompareResult ComparePropertiesWithReport<T>(
+        public static CompareResult CompareWithReport<T>(
             T obj1, T obj2,
             bool publicOnly = true,
             bool propertiesOnly = true,

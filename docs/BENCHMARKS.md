@@ -46,11 +46,11 @@ public class ComparisonBenchmarks
 
     [Benchmark]
     public bool CompareSimpleObjects() =>
-        DeepComparer.CompareProperties(obj1, obj2);
+        DeepComparer.Compare(obj1, obj2);
 
     [Benchmark]
     public CompareResult CompareWithReport() =>
-        DeepComparer.ComparePropertiesWithReport(obj1, obj2);
+        DeepComparer.CompareWithReport(obj1, obj2);
 }
 
 public class Program

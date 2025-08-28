@@ -14,7 +14,7 @@ namespace DeepComparer_xUnit.Tests
             var b = new WithJsonIgnore { Secret = "B", Visible = "V" };
 
             // jsonIgnore = true (default): Secret difference ignored
-            Assert.True(DeepComparer.CompareProperties(a, b));
+            Assert.True(DeepComparer.Compare(a, b));
         }
 
         [Fact]
@@ -24,7 +24,7 @@ namespace DeepComparer_xUnit.Tests
             var b = new WithJsonIgnore { Secret = "B", Visible = "V" };
 
             // jsonIgnore = false: Secret is compared -> not equal
-            var report = DeepComparer.ComparePropertiesWithReport(a, b, jsonIgnore: false);
+            var report = DeepComparer.CompareWithReport(a, b, jsonIgnore: false);
             Assert.False(report.AreEqual);
             Assert.Contains(report.Differences, d => d.Contains("Secret"));
         }
